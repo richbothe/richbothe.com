@@ -40,5 +40,4 @@ The deploy refuses to run if `DEPLOY_PATH` is missing, absolute, or contains `..
 
 ## Still to add
 
-- `public/rich-bothe-resume.pdf` (the résumé buttons link to it)
 - The full case study write-ups (the pages currently show the summary only)
