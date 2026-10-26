@@ -85,9 +85,8 @@ jobs:
 
       - uses: treosh/lighthouse-ci-action@v12
         with:
-          staticDistDir: ./dist
+          configPath: ./lighthouserc.json
           uploadArtifacts: true
-          runs: 1
 
   deploy:
     name: Deploy to A2 Hosting
