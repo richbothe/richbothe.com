@@ -29,7 +29,7 @@ describe('CaseStudyView', () => {
   it('has a detail for every case study and no unfinished placeholders', () => {
     for (const c of caseStudies) {
       const detail = caseStudyDetails[c.slug]
-      expect(detail, c.slug).toBeDefined()
+      expect(detail).toBeDefined()
       expect(caseStudies.some((n) => n.slug === detail!.next)).toBe(true)
     }
     expect(JSON.stringify(caseStudyDetails)).not.toMatch(/\[(add|Add)[^\]]*\]/)
