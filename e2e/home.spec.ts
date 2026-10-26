@@ -13,7 +13,7 @@ test('a case study card opens its page', async ({ page }) => {
   await page.goto('/')
   await page.getByRole('link', { name: 'Read the story →' }).first().click()
   await expect(page).toHaveURL(/\/work\/arcgis$/)
-  await expect(page.locator('h1')).toContainText('Seven maps on ArcGIS 4.x')
+  await expect(page.locator('h1')).toContainText('Seven maps, one developer')
 })
 
 test('skip link is the first focusable element', async ({ page }) => {
