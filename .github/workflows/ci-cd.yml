@@ -1,0 +1,155 @@
+name: CI/CD
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run: show what would change on the server without changing it'
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-cd-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  check:
+    name: Lint, test, build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Lint
+        run: npm run check:lint
+
+      - name: Type-check
+        run: npm run type-check
+
+      - name: Unit tests
+        run: npx vitest run
+
+      - name: Build (pre-rendered static site)
+        run: npm run build-only
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: End-to-end tests
+        run: npx playwright test --project=chromium
+        env:
+          CI: 'true'
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
+      - name: Upload built site
+        uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: dist/
+          retention-days: 7
+
+  lighthouse:
+    name: Lighthouse (performance, accessibility, SEO)
+    runs-on: ubuntu-latest
+    needs: check
+    timeout-minutes: 10
+    # Advisory for now. Remove continue-on-error once the scores are where you want them.
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: site
+          path: dist
+
+      - uses: treosh/lighthouse-ci-action@v12
+        with:
+          staticDistDir: ./dist
+          uploadArtifacts: true
+          runs: 1
+
+  deploy:
+    name: Deploy to A2 Hosting
+    runs-on: ubuntu-latest
+    needs: check
+    if: >-
+      (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
+    environment: production
+    timeout-minutes: 10
+    concurrency:
+      group: deploy
+      cancel-in-progress: false
+    env:
+      # ED25519 fingerprint of the A2 server, so a spoofed host fails the deploy.
+      EXPECTED_HOST_FINGERPRINT: 'SHA256:n18+UmlBz5aaRHZIK99Fd3tGyHM7VBoVEheqMxpyUrY'
+      DEPLOY_PATH: ${{ vars.DEPLOY_PATH }}
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_USER: ${{ secrets.SSH_USER }}
+      SSH_PORT: ${{ secrets.SSH_PORT }}
+      # Pushes deploy for real. Manual runs default to a dry run.
+      DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || 'false' }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: site
+          path: dist
+
+      - name: Check deploy settings
+        run: |
+          if [ -z "$DEPLOY_PATH" ]; then
+            echo "::error::The DEPLOY_PATH repository variable is not set. Set it to the document root of richbothe.com (relative to your home folder)."
+            exit 1
+          fi
+          case "$DEPLOY_PATH" in
+            /*|*..*) echo "::error::DEPLOY_PATH must be a relative path inside your home folder."; exit 1 ;;
+          esac
+
+      - name: Set up SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -t ed25519 -p "$SSH_PORT" "$SSH_HOST" > ~/.ssh/scanned_host 2>/dev/null
+          actual=$(ssh-keygen -lf ~/.ssh/scanned_host | awk '{print $2}')
+          if [ "$actual" != "$EXPECTED_HOST_FINGERPRINT" ]; then
+            echo "::error::Host key fingerprint mismatch (got $actual). Not deploying."
+            exit 1
+          fi
+          cp ~/.ssh/scanned_host ~/.ssh/known_hosts
+
+      - name: Deploy with rsync
+        run: |
+          flags="-az --delete --max-delete=200 --itemize-changes"
+          if [ "$DRY_RUN" = "true" ]; then flags="$flags --dry-run"; echo "DRY RUN: nothing will be changed."; fi
+          rsync $flags \
+            --exclude '/.well-known/' --exclude '/cgi-bin/' --exclude '/error_log' \
+            -e "ssh -i ~/.ssh/deploy_key -p $SSH_PORT -o StrictHostKeyChecking=yes" \
+            dist/ "$SSH_USER@$SSH_HOST:$DEPLOY_PATH/"
+
+      - name: Remove the key
+        if: always()
+        run: rm -f ~/.ssh/deploy_key
