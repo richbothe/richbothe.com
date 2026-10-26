@@ -1,35 +1,61 @@
-@import './base.css';
+@import 'tailwindcss';
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
+/* Blueprint brand tokens. See the brand board for usage rules. */
+@theme {
+  --color-brand: #44688f; /* soft blue: primary */
+  --color-brand-deep: #2f4b6e; /* footer, hover and pressed states */
+  --color-sky: #dce8f5; /* small labels on blue, soft tints */
+  --color-paper: #f7f5f0; /* backgrounds, text on blue */
+  --color-ink: #1f2d3f; /* body text and headings */
+  --color-accent: #f5b04c; /* amber: fills, rules, dots, buttons (not small text) */
+  --color-accent-deep: #9a5b00; /* amber text on paper */
+  --color-quiet: #5b6b80; /* secondary text, captions */
+  --color-muted: #3d4c60; /* body text on white cards */
+  --color-rule: #d9dee5; /* grid lines, dividers */
+  --color-onbrand: #eaf1f8; /* body text on soft blue */
+
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --font-hand: 'Caveat', cursive;
 }
 
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-  padding: 3px;
+/* Faint 40px grid on blue bands. The offset lines the grid up with the 1200px content column. */
+@utility blueprint-grid {
+  background-color: var(--color-brand);
+  background-image:
+    linear-gradient(rgba(247, 245, 240, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(247, 245, 240, 0.1) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: calc(50% + 4px) 0;
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
+@layer base {
+  html {
+    background: var(--color-paper);
   }
-}
 
-@media (min-width: 1024px) {
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
   body {
-    display: flex;
-    place-items: center;
+    margin: 0;
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.6;
   }
 
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
+  :focus-visible {
+    outline: 3px solid var(--color-accent-deep);
+    outline-offset: 3px;
+  }
+
+  .on-brand :focus-visible {
+    outline-color: var(--color-paper);
   }
 }

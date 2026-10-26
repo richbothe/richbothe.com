@@ -9,9 +9,11 @@
     "preview": "vite preview",
     "test:unit": "vitest",
     "test:e2e": "playwright test",
-    "build-only": "vite build",
+    "build-only": "vite-ssg build",
     "type-check": "vue-tsc --build",
     "lint": "run-s \"lint:*\"",
+    "check:lint": "oxlint . && eslint .",
+    "check:format": "prettier --check --experimental-cli src/",
     "lint:oxlint": "oxlint . --fix",
     "lint:eslint": "eslint . --fix --cache",
     "format": "prettier --write --experimental-cli src/"

@@ -1,73 +1,43 @@
 # richbothe.com
 
-This template should help get you started developing with Vue 3 in Vite.
+Personal portfolio for Rich Bothe. Vue 3, Vite, TypeScript and Tailwind CSS, pre-rendered to static HTML with `vite-ssg` and deployed to A2 Hosting by GitHub Actions.
 
-## Recommended IDE Setup
-
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Recommended Browser Setup
-
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
+## Develop
 
 ```sh
 npm install
+npm run dev          # local dev server
+npm run build        # type-check + pre-render to dist/
+npm run preview      # serve dist/ at http://localhost:4173
+npx vitest run       # unit tests
+npx playwright test  # end-to-end tests (needs a build first)
+npm run check:lint   # lint without auto-fixing
 ```
 
-### Compile and Hot-Reload for Development
+## Brand
 
-```sh
-npm run dev
-```
+The Blueprint brand tokens (colors, fonts, the grid background) live in `src/assets/main.css` under `@theme`. Use the token utilities (`bg-brand`, `text-accent-deep`, `font-display`, `blueprint-grid`) instead of raw hex values.
 
-### Type-Check, Compile and Minify for Production
+## CI/CD
 
-```sh
-npm run build
-```
+`.github/workflows/ci-cd.yml`
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+- **Every pull request and push:** lint, type-check, unit tests, build, end-to-end tests (Chromium), and an advisory Lighthouse run.
+- **Push to `main`:** the same checks, then `rsync` over SSH to A2 Hosting.
+- **Manual run** (Actions tab, "Run workflow"): defaults to a dry run that lists what would change without touching the server.
 
-```sh
-npm run test:unit
-```
+### Required GitHub settings
 
-### Run End-to-End Tests with [Playwright](https://playwright.dev)
+| Kind | Name | Value |
+| --- | --- | --- |
+| Secret | `SSH_PRIVATE_KEY` | Private half of the deploy-only key |
+| Secret | `SSH_HOST` | A2 server host name |
+| Secret | `SSH_USER` | cPanel username |
+| Secret | `SSH_PORT` | SSH port (A2 shared hosting uses 7822) |
+| Variable | `DEPLOY_PATH` | Document root of richbothe.com, relative to the home folder |
 
-```sh
-# Install browsers for the first run
-npx playwright install
+The deploy refuses to run if `DEPLOY_PATH` is missing, absolute, or contains `..`, and it checks the server's SSH fingerprint before sending anything. `--delete` keeps the server in sync with `dist/` but skips `.well-known/` (AutoSSL) and `cgi-bin/`.
 
-# When testing on CI, must build the project first
-npm run build
+## Still to add
 
-# Runs the end-to-end tests
-npm run test:e2e
-# Runs the tests only on Chromium
-npm run test:e2e -- --project=chromium
-# Runs the tests of a specific file
-npm run test:e2e -- tests/example.spec.ts
-# Runs the tests in debug mode
-npm run test:e2e -- --debug
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+- The full case study write-ups (the pages currently show the summary only)
