@@ -5,7 +5,7 @@ test('home page shows the headline and main navigation', async ({ page }) => {
   await expect(page.locator('h1')).toContainText('Built carefully, for real people')
   const nav = page.getByRole('navigation', { name: 'Main' })
   for (const name of ['Work', 'Skills', 'My journey', 'How I work', 'Contact me']) {
-    await expect(nav.getByRole('link', { name })).toBeVisible()
+    await expect(nav.getByRole('link', { name, exact: true })).toBeVisible()
   }
 })
 
