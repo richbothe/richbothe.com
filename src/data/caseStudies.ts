@@ -25,7 +25,7 @@ export const caseStudies: CaseStudy[] = [
     kicker: 'MODERNIZATION',
     title: 'jQuery to Vue, Bootstrap 4 to 5.3',
     summary:
-      'Redeveloped each trip tool as a stand-alone Vue app initially, smallest to largest. Later, integrated into larger Vue app with shared components and a build that runs on both the legacy and new CMS.',
+      'Redeveloped each trip tool as a stand-alone Vue app initially, smallest to largest. Later, integrated them into a larger Vue app with shared components and two builds that run on both the legacy and new CMS.',
     result:
       'Result: a maintainable, reactive stack with shared components and bugs fixed along the way.',
     tags: 'VUE · TYPESCRIPT · VITE · PINIA',
@@ -38,6 +38,6 @@ export const caseStudies: CaseStudy[] = [
     summary:
       'Technical lead on moving a public website from a legacy CMS to Umbraco. Styles, assets, and trip tools load via CDN for use in other supporting applications (ie. microsites, fare payments app).',
     result: "Result: Live since August 3, 2026, with multiple themes for the site's microsites.",
-    tags: 'UMBRACO · VUE · ASP.NET MVC',
+    tags: 'UMBRACO · VUE · VITE',
   },
 ]

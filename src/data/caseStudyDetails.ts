@@ -214,6 +214,10 @@ export const caseStudyDetails: Record<string, CaseStudyDetail> = {
                 lead: 'Built for the edge cases.',
                 text: "Trips that cross midnight get the right duration. When no trip is found, the rider sees a clear message with a way to adjust the search. If the map can't load, the written itinerary still works.",
               },
+              {
+                lead: "What's changing.",
+                text: 'Trip Planner is moving to Arcadis OTP (OpenTripPlanner). Riders will keep using our trip plan form, which sends the plan to Arcadis, and their results open in a modal through an iframe. The results described above will be retired when that goes live.',
+              },
             ],
           },
           {
@@ -317,7 +321,7 @@ export const caseStudyDetails: Record<string, CaseStudyDetail> = {
               'Route Schedules',
               'Trip Planner',
             ],
-            note: 'The seven map tools, built on the shared list-and-map pattern above.',
+            note: 'The seven map tools. Park & Rides, Stops & Stations and Go-To Retailers share the list-and-map pattern above.',
           },
         ],
         aside: { text: 'Smallest first, on purpose: learn a bit, apply it right away.' },
@@ -360,7 +364,7 @@ export const caseStudyDetails: Record<string, CaseStudyDetail> = {
               { text: 'One location-permission prompt instead of two.' },
               {
                 lead: 'Far less data to load a page.',
-                text: 'The ArcGIS core (about 12 MB) used to download when the page loaded. Now it loads once, and only when the first map is drawn, so the first map pays that one-time cost. Each map after that loads only the data it needs, about 2 MB. It supports an equity goal: less bandwidth to load a page, by loading only what’s necessary and what the rider asks for.',
+                text: 'The ArcGIS core (about 12 MB) used to download when the page loaded. Now it loads only on pages that use a map, and only when the first map is drawn, so the first map pays that one-time cost. Each map after that loads only the data it needs, about 2 MB. It supports an equity goal: less bandwidth to load a page, by loading only what’s necessary and what the rider asks for.',
               },
             ],
           },
@@ -375,12 +379,16 @@ export const caseStudyDetails: Record<string, CaseStudyDetail> = {
             type: 'bullets',
             items: [
               {
+                lead: 'Bring Trip Planner onto Arcadis OTP.',
+                text: 'In development now. Riders still use our trip plan form, which sends the plan to Arcadis OTP (OpenTripPlanner) and shows its results in a modal through an iframe.',
+              },
+              {
                 lead: 'Move Trip Planner onto the shared autocomplete.',
                 text: 'Its search was built separately, so switching it over means one search component to maintain across all the tools that need one.',
               },
               {
                 lead: 'Bring the other tools onto Pinia.',
-                text: 'Only one tool uses it for state today. Converting the rest would give all seven the same way of handling state.',
+                text: 'Today only Alert Subscriptions uses it for state. Converting the map tools would give all seven the same way of handling state.',
               },
               {
                 lead: 'Keep improving accessibility.',
@@ -401,6 +409,7 @@ export const caseStudyDetails: Record<string, CaseStudyDetail> = {
     heroTags: ['VUE.JS', 'TYPESCRIPT', 'VITE', 'PINIA', 'BOOTSTRAP 5.3', 'JEST'],
     glance: [
       { label: 'ROLE', value: 'Technical lead and lead developer' },
+      { label: 'TIMELINE', value: 'Planned from 2018; map tools converted in 2025' },
       { label: 'TOOLS', value: 'Seven map tools, from Park & Rides to Trip Planner' },
       { label: 'STACK', value: 'Vue.js, TypeScript, Vite, Pinia, Bootstrap 5.3, Jest' },
     ],
@@ -439,24 +448,28 @@ export const caseStudyDetails: Record<string, CaseStudyDetail> = {
             type: 'steps',
             items: [
               {
-                title: 'Learn the mapping layer first',
-                text: 'I started by learning ArcGIS, since every one of these tools depends on its maps.',
+                title: 'Start with what didn’t need a map',
+                text: 'Planning began in 2018. From then on, new development that didn’t include maps was written in Vue.',
+              },
+              {
+                title: 'Learn the mapping layer',
+                text: 'In 2025, before converting the map tools, I trained on ArcGIS, since every one of them depends on its maps.',
               },
               {
                 title: 'Rebuild each tool as its own Vue app',
-                text: 'I rewrote the tools separately, starting with the smallest, Park & Rides, and finishing with the largest, Trip Planner.',
+                text: 'In 2025 I rewrote the map tools separately, starting with the smallest, Park & Rides, and finishing with the largest, Trip Planner.',
               },
               {
                 title: 'Build shared components along the way',
                 text: "Components built for one tool carried over to the next, so the shared parts grew as the project did. One example: an autocomplete I wrote from scratch to replace jQuery's, including its highlighting and formatting.",
               },
               {
-                title: 'One build, two homes',
-                text: 'During the transition, every tool had to work on both the legacy CMS and the new one. That took some unconventional Vite configuration.',
+                title: 'Two builds, two homes',
+                text: 'During the transition, every tool had to work on both the legacy CMS and the new one. That took two builds, a standard one and one that included the compiled custom Bootstrap 5.3 CSS, plus some unconventional Vite configuration.',
               },
               {
                 title: 'Keep state predictable',
-                text: 'State is handled in two parts: TypeScript interfaces that describe it, and a state factory function that returns the initial store values. One tool uses Pinia so far.',
+                text: 'State is handled in two parts: TypeScript interfaces that describe it, and a state factory function that returns the initial store values. So far, only Alert Subscriptions uses Pinia.',
               },
               {
                 title: 'Bring it all together',
@@ -479,6 +492,9 @@ export const caseStudyDetails: Record<string, CaseStudyDetail> = {
               },
               { text: 'Shared components reused across the trip tools.' },
               {
+                text: 'ArcGIS loads only on pages that use a map, and only when the first map is drawn, instead of its 12 MB core loading with the page. Each map after that loads only what it needs, about 2 MB, which supports an equity goal of using less bandwidth.',
+              },
+              {
                 text: 'Tools that ran on both the legacy and the new CMS throughout the transition.',
               },
               { text: 'Lingering bugs fixed along the way.' },
@@ -496,7 +512,7 @@ export const caseStudyDetails: Record<string, CaseStudyDetail> = {
         blocks: [
           {
             type: 'p',
-            text: 'Only one tool uses Pinia so far. Next, I’d move the others over so all of the state is managed the same way.',
+            text: 'Only Alert Subscriptions uses Pinia so far. Next, I’d move the other tools over so all of the state is managed the same way.',
           },
         ],
       },
@@ -505,13 +521,16 @@ export const caseStudyDetails: Record<string, CaseStudyDetail> = {
   },
 
   umbraco: {
-    heroTitle: 'Mojo Portal to Umbraco: moving a public website to a supported CMS',
+    heroTitle: 'Mojo Portal to Umbraco: moving a public website to a modern CMS',
     heroSub:
-      'Choosing the front-end stack, running two CMSs side by side for years, and keeping production steady until the move.',
-    heroTags: ['UMBRACO CMS', 'ASP.NET MVC', 'VUE.JS', 'VITE', 'PINIA', 'JEST', 'PLAYWRIGHT'],
+      'Choosing the front-end stack, managing two CMS environements side by side for a year, and keeping production steady until the move.',
+    heroTags: ['UMBRACO CMS', 'VUE.JS', 'VITE', 'PINIA', 'JEST', 'PLAYWRIGHT'],
     glance: [
       { label: 'ROLE', value: 'Technical lead' },
-      { label: 'TIMELINE', value: 'Started in 2018; went live August 3, 2026' },
+      {
+        label: 'TIMELINE',
+        value: 'Planning began in 2018; CMS transition began in 2025; live August 3, 2026',
+      },
       { label: 'GOAL', value: 'One CMS that can run multiple websites' },
       { label: 'STACK', value: 'Umbraco CMS, Vue.js, Vite, Pinia, Jest, Playwright' },
     ],
@@ -522,7 +541,7 @@ export const caseStudyDetails: Record<string, CaseStudyDetail> = {
         blocks: [
           {
             type: 'p',
-            text: 'The public website ran on Mojo Portal, a CMS built on an older ASP.NET web platform that was no longer supported. We needed to move to a CMS built on ASP.NET MVC.',
+            text: 'The public website ran on Mojo Portal, a CMS built on an older ASP.NET web platform that was no longer supported.',
           },
           {
             type: 'p',
@@ -537,7 +556,7 @@ export const caseStudyDetails: Record<string, CaseStudyDetail> = {
         blocks: [
           {
             type: 'p',
-            text: 'The project began in 2018. As technical lead, I worked with the IS lead to make sure the front-end stack we picked would work well with the CMS.',
+            text: 'Planning began in 2018. As technical lead, I worked with the IS lead to make sure the front-end stack we picked would work well with the CMS.',
           },
           {
             type: 'p',
@@ -558,12 +577,12 @@ export const caseStudyDetails: Record<string, CaseStudyDetail> = {
                 text: 'The front-end choice had to fit Umbraco, so the IS lead and I settled it before building anything. Our first plan, React with webpack, gave way to Vue.js.',
               },
               {
-                title: 'Write all new work in Vue',
-                text: 'It would be several years before we went live on Umbraco. In the meantime, we decided all new development on Mojo Portal would use Vue.js, so it could move to Umbraco later with less rework.',
+                title: 'Write new work in Vue',
+                text: 'The CMS transition wouldn’t start until 2025. In the meantime, new development on Mojo Portal that didn’t include maps used Vue.js, so it could move to Umbraco later with less rework.',
               },
               {
                 title: 'Plug Vue into the old CMS',
-                text: "I loaded ArcGIS core in Mojo Portal's shared template, so a Vue app could be connected to any CMS page. The trip tools with maps were built as independent Vue projects, partly because ArcGIS 3.x was deprecated and heading for end of support.",
+                text: "A Vue app could be connected to any Mojo Portal page through its shared template. In 2025 the map tools were converted to Vue as independent projects, partly because ArcGIS 3.x was deprecated and heading for end of support. ArcGIS loads only on pages that use a map, and only when the first map is drawn.",
               },
               {
                 title: 'Run both sites side by side',
@@ -571,7 +590,7 @@ export const caseStudyDetails: Record<string, CaseStudyDetail> = {
               },
               {
                 title: 'One front end, two builds',
-                text: 'The front end had two build scripts, one for Mojo Portal and one for Umbraco.',
+                text: 'The front end had two build scripts: a standard build, and one that also included the compiled custom Bootstrap 5.3 CSS.',
               },
               {
                 title: 'Mimic the site in development',
@@ -592,16 +611,13 @@ export const caseStudyDetails: Record<string, CaseStudyDetail> = {
               {
                 text: "Live on Umbraco since August 3, 2026, with multiple themes supporting the site's microsites.",
               },
-              {
-                text: 'ArcGIS now loads once, and only when the first map is drawn, instead of its 12 MB core loading with the page. Each map after that loads only what it needs, about 2 MB, which supports an equity goal of using less bandwidth.',
-              },
               { text: 'A much cleaner DOM structure.' },
               { text: 'A formal GitHub deployment pipeline.' },
               {
                 text: "A more organized project that shares code wherever it can. A few earlier tools aren't yet fully integrated into the larger trip tools project.",
               },
               {
-                text: 'Pinia for state, Jest for code and accessibility testing, and Playwright for end-to-end testing.',
+                text: 'Pinia for state (in Alert Subscriptions so far), Jest for code and accessibility testing, and Playwright for end-to-end testing.',
               },
               {
                 text: 'A geolocation bug fixed. Location sometimes came from GIS and sometimes from the browser, which asked riders for permission twice. It now comes from one shared source.',
@@ -610,10 +626,6 @@ export const caseStudyDetails: Record<string, CaseStudyDetail> = {
             ],
           },
         ],
-        aside: {
-          text: 'The ArcGIS 4.x upgrade rode along.',
-          link: { to: '/work/arcgis', label: 'See Case 01 →' },
-        },
       },
       {
         label: '05 — THE HARDEST PART',
