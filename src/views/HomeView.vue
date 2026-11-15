@@ -23,9 +23,9 @@ import { cares, skills, journey, howIWork } from '@/data/home'
           Front-end developer. Built carefully, for real people.
         </h1>
         <p class="mt-7 max-w-[620px] text-xl text-onbrand">
-          I'm Rich. I build accessible, well-made web tools, and I care how they feel to use. 9+
-          years on public-facing tools with Vue.js and ArcGIS, after a career of working closely
-          with clients and teams.
+          I'm Rich. I build accessible, well-made web tools, and I care how they feel to use. For
+          9+ years I've built data-driven tools for the public, specializing in Vue.js and ArcGIS,
+          after a career of working closely with clients and teams.
         </p>
         <div class="mt-9 flex flex-wrap gap-4">
           <RouterLink

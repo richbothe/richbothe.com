@@ -39,7 +39,7 @@ export const skills = [
   {
     title: 'Tooling & accessibility',
     items:
-      'Node.js · Git · Azure DevOps · Adobe Workfront · VS Code · Vite / Webpack · Jest · WCAG · Responsive design',
+      'Node.js · Git · Azure DevOps · Adobe Workfront · VS Code · Vite / Webpack · Jest · Playwright · WCAG · Responsive design · AI-assisted development',
     slug: 'vue',
     proof: 'Used in: jQuery to Vue →',
   },
