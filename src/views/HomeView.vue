@@ -24,7 +24,7 @@ import { cares, skills, journey, howIWork } from '@/data/home'
         </h1>
         <p class="mt-7 max-w-[620px] text-xl text-onbrand">
           I'm Rich. I've been building websites since 2007, with the last 9+ years in public service
-          at Metro Transit building accessible, data-driven tools with Vue.js and ArcGIS.
+          at Metro Transit, developing accessible, data-driven tools with Vue.js and ArcGIS.
         </p>
         <div class="mt-9 flex flex-wrap gap-4">
           <RouterLink
