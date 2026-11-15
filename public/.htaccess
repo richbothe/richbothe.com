@@ -6,6 +6,9 @@ RewriteCond %{HTTPS} off [OR]
 RewriteCond %{HTTP_HOST} ^www\.richbothe\.com$ [NC]
 RewriteRule ^(.*)$ https://richbothe.com/$1 [R=301,L]
 
+# The résumé prints richbothe.com/work: send it to the Work section
+RewriteRule ^work/?$ /#work [R=301,NE,L]
+
 # Clean URLs: vite-ssg writes /work/arcgis.html, so serve it for /work/arcgis
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}.html -f

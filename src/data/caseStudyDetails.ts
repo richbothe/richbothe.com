@@ -406,12 +406,12 @@ export const caseStudyDetails: Record<string, CaseStudyDetail> = {
     heroTitle: "From jQuery to Vue: rebuilding Metro Transit's trip tools",
     heroSub:
       'Moving a family of public trip tools off a legacy stack, one tool at a time, while keeping the live site running.',
-    heroTags: ['VUE.JS', 'TYPESCRIPT', 'VITE', 'PINIA', 'BOOTSTRAP 5.3', 'JEST'],
+    heroTags: ['VUE.JS', 'TYPESCRIPT', 'VITE', 'PINIA', 'BOOTSTRAP 5.3', 'JEST', 'PLAYWRIGHT'],
     glance: [
       { label: 'ROLE', value: 'Technical lead and lead developer' },
       { label: 'TIMELINE', value: 'Planned from 2018; map tools converted in 2025' },
       { label: 'TOOLS', value: 'Seven map tools, from Park & Rides to Trip Planner' },
-      { label: 'STACK', value: 'Vue.js, TypeScript, Vite, Pinia, Bootstrap 5.3, Jest' },
+      { label: 'STACK', value: 'Vue.js, TypeScript, Vite, Pinia, Bootstrap 5.3, Jest, Playwright' },
     ],
     sections: [
       {
